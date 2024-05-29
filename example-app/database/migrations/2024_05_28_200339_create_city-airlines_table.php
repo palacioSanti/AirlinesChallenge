@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('city_id');
             $table->foreignId('airline_id');
+            $table->unique(['city_id', 'airline_id']);
             $table->timestamps();
         });
     }

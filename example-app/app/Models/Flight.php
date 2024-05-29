@@ -45,7 +45,7 @@ class Flight extends Model
                 throw new InvalidArrivalTimeException();
             }
 
-            if ($flight->departure_time < 1) {
+            if ($flight->departure_time < now()) {
                 throw new InvalidDepartureTimeException();
             }
         });
