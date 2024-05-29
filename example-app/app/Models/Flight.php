@@ -8,7 +8,8 @@ use App\Exceptions\{
     ArrivalCityNotAssociatedException,
     DepartureCityNotAssociatedException,
     InvalidArrivalTimeException,
-    InvalidDepartureTimeException
+    InvalidDepartureTimeException,
+    SameCityException
 };
 
 class Flight extends Model
@@ -34,6 +35,10 @@ class Flight extends Model
 
             if (!$isArrivalCityAssociated) {
                 throw new ArrivalCityNotAssociatedException();
+            }
+
+            if ($flight->arrival_city_id === $flight->departure_city_id) {
+                throw new SameCityException();
             }
 
             if ($flight->arrival_time <= $flight->departure_time) {
