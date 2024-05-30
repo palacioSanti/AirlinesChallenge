@@ -5,7 +5,6 @@ namespace Database\Seeders;
 use App\Models\{
     Airline,
     City,
-    City_Airline,
     Flight,
 };
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -18,10 +17,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        City::truncate();
-        Airline::truncate();
-        Flight::truncate();
-        City_Airline::truncate();
 
         City::factory()->count(15)->create();
 

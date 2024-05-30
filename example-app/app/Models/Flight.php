@@ -16,6 +16,13 @@ class Flight extends Model
 {
     use HasFactory;
 
+    protected $with = ['departureCity', 'arrivalCity', 'airline'];
+
+    protected $casts = [
+        'departure_datetime' => 'datetime',
+        'arrival_datetime' => 'datetime',
+    ];
+
     protected static function boot()
     {
         parent::boot();
@@ -41,11 +48,14 @@ class Flight extends Model
                 throw new SameCityException();
             }
 
-            if ($flight->arrival_time <= $flight->departure_time) {
+            $departure_datetime = $flight->departure_datetime;
+            $arrival_datetime = $flight->arrival_datetime;
+
+            if ($departure_datetime->greaterThanOrEqualTo($arrival_datetime)) {
                 throw new InvalidArrivalTimeException();
             }
 
-            if ($flight->departure_time < now()) {
+            if ($departure_datetime->lessThanOrEqualTo(now())) {
                 throw new InvalidDepartureTimeException();
             }
         });

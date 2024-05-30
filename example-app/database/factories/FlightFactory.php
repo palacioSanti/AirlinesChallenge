@@ -29,8 +29,8 @@ class FlightFactory extends Factory
             'airline_id' => $airline->id,
             'departure_city_id' => $departureCity->id,
             'arrival_city_id' => $arrivalCity->id,
-            'departure_time' => $this->faker->dateTimeBetween('+1 days', '+2 days'),
-            'arrival_time' => $this->faker->dateTimeBetween('+2 days', '+3 days'),
+            'departure_datetime' => $this->faker->dateTimeBetween('+1 days', '+2 days'),
+            'arrival_datetime' => $this->faker->dateTimeBetween('+2 days', '+3 days'),
         ];
 
     }
