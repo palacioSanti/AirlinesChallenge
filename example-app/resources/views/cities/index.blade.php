@@ -30,6 +30,7 @@
         $(document).ready(function() {
             const urlParams = new URLSearchParams(window.location.search);
             const currentAirlineId = urlParams.get('airline_id');
+            let orderTrue = true;
             $('#add-city').on('click', function() {
                 const name = $('#city-name').val();
                 if (!name) {
@@ -153,7 +154,13 @@
 
             $('.city-container').on('click', '.sort', function() {
                 const sort = $(this).data('sort');
-                const order = $(this).data('order') === 'asc' ? 'desc' : 'asc';
+                if(orderTrue){
+                    var order = 'asc';
+                    orderTrue = false;
+                }else{
+                    var order = 'desc';
+                    orderTrue = true;
+                }
                 loadCities({
                     sort: sort,
                     order: order
