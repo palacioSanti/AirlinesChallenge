@@ -30,7 +30,7 @@
         $(document).ready(function() {
             const urlParams = new URLSearchParams(window.location.search);
             const currentAirlineId = urlParams.get('airline_id');
-            let orderTrue = true;
+
             $('#add-city').on('click', function() {
                 const name = $('#city-name').val();
                 if (!name) {
@@ -39,7 +39,7 @@
                 }
 
                 $.ajax({
-                    url: '{{ route('cities.store') }}',
+                    url: '{{ route('api.cities.store') }}',
                     type: 'POST',
                     data: {
                         name: name,
@@ -78,7 +78,7 @@
                 });
             });
 
-            $('#city-table').on('click', '.btn-delete', function() {
+            $('.city-container').on('click', '.btn-delete', function() {
                 const row = $(this).closest('tr');
                 const id = row.data('id');
 
@@ -97,7 +97,7 @@
                 });
             });
 
-            $('#city-table').on('click', '.btn-edit', function() {
+            $('.city-container').on('click', '.btn-edit', function() {
                 const row = $(this).closest('tr');
                 const id = row.data('id');
                 const name = prompt('Type the name of the city:', row.find('td:nth-child(2)')
@@ -145,25 +145,33 @@
                 });
             }
 
+            let airlineId = '';
+            let sortType = '';
+            let orderAsc = true;
+
             $('#airline-filter').on('change', function() {
-                const airlineId = $(this).val();
+                airlineId = $(this).val();
                 loadCities({
-                    airline_id: airlineId
+                    airline_id: airlineId,
+                    sort: sortType,
+                    order: 'asc'
                 });
+                orderAsc = true;
             });
 
             $('.city-container').on('click', '.sort', function() {
-                const sort = $(this).data('sort');
-                if(orderTrue){
+                sortType = $(this).data('sort');
+                if(orderAsc){
                     var order = 'asc';
-                    orderTrue = false;
+                    orderAsc = false;
                 }else{
                     var order = 'desc';
-                    orderTrue = true;
+                    orderAsc = true;
                 }
                 loadCities({
-                    sort: sort,
-                    order: order
+                    sort: sortType,
+                    order: order,
+                    airline_id: airlineId
                 });
             });
 

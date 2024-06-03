@@ -9,7 +9,5 @@ use App\Http\Controllers\CityController;
 
 
 
-Route::resource('cities', CityController::class)->except(['create', 'edit', 'show']);
-
-//Route::get('cities', [CityController::class, 'index'])->name('cities.index');
+Route::get('cities', [CityController::class, 'index'])->name('cities.index');
 
