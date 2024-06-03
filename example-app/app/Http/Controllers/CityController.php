@@ -27,11 +27,5 @@ class CityController extends Controller
         return view('cities.index', compact('cities', 'airlines'));
     }
 
-    public function store(Request $request)
-    {
-       return true;
-
-    }
-
 
 }

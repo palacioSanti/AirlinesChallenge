@@ -146,7 +146,7 @@
             }
 
             let airlineId = '';
-            let sortType = '';
+            let sortType = 'id';
             let orderAsc = true;
 
             $('#airline-filter').on('change', function() {
