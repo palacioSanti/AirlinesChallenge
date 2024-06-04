@@ -5,6 +5,9 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreCityRequest;
 use App\Models\City;
+use Illuminate\Database\Eloquent\Casts\Json;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Js;
 
 class CityController extends Controller
 {
@@ -14,7 +17,7 @@ class CityController extends Controller
 
         $city = City::create($validated);
 
-        return response()->json(['city' => $city], 201);
+        return response()->json(['city' => $city], JsonResponse::HTTP_CREATED);
     }
 
     public function update(StoreCityRequest $request, City $city)
@@ -28,13 +31,13 @@ class CityController extends Controller
 
         $city->update($request->only('name'));
 
-        return response()->json(['city' => $city], 200);
+        return response()->json(['city' => $city], JsonResponse::HTTP_OK);
     }
 
     public function destroy(City $city)
     {
         $city->delete();
 
-        return response()->json(null, 204);
+        return response()->json(null, JsonResponse::HTTP_NO_CONTENT);
     }
 }
