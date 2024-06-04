@@ -13,7 +13,7 @@ class CityController extends Controller
         $query = City::withCount(['departureFlights', 'arrivalFlights'])
             ->filter($request->input('airline_id'));
 
-       $query
+        $query
             ->when($request->has('sort'), function ($query) use ($request) {
                 $query->orderBy($request->sort, $request->order);
             });

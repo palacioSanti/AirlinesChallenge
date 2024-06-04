@@ -16,11 +16,8 @@ class City extends Model
         if (!$airlineId) {
             return;
         }
-        $query->whereHas('departureFlights', function ($q) use ($airlineId) {
-            $q->where('airline_id', $airlineId);
-        })->orWhereHas('arrivalFlights', function ($q) use ($airlineId) {
-            $q->where('airline_id', $airlineId);
-        });
+        $query->whereHas('departureFlights', fn ($q) => $q->where('airline_id', $airlineId))
+            ->orWhereHas('arrivalFlights', fn ($q) => $q->where('airline_id', $airlineId));
     }
 
     public function airlines()
