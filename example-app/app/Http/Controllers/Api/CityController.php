@@ -29,7 +29,9 @@ class CityController extends Controller
             return response()->json(['errors' => $validated->errors()], 422);
         }*/
 
-        $city->update($request->only('name'));
+        $city->update([
+            'name' => $request->string('name')->toString()
+        ]);
 
         return response()->json(['city' => $city], JsonResponse::HTTP_OK);
     }
