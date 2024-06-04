@@ -11,11 +11,12 @@ class CityController extends Controller
     public function index(Request $request)
     {
         $query = City::withCount(['departureFlights', 'arrivalFlights'])
-            ->filter($request->only('airline_id'));
+            ->filter($request->input('airline_id'));
 
-        if ($request->has('sort') && $request->has('order')) {
-            $query->orderBy($request->sort, $request->order);
-        }
+       $query
+            ->when($request->has('sort'), function ($query) use ($request) {
+                $query->orderBy($request->sort, $request->order);
+            });
 
         $cities = $query->simplePaginate(10);
 
@@ -26,6 +27,4 @@ class CityController extends Controller
         $airlines = Airline::all();
         return view('cities.index', compact('cities', 'airlines'));
     }
-
-
 }

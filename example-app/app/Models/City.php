@@ -11,18 +11,15 @@ class City extends Model
 
     protected $fillable = ['name'];
 
-    public function scopeFilter($query, array $filters)
+    public function scopeFilter($query, $airlineId)
     {
-        $query->when($filters['airline_id'] ?? false, function ($query, $airlineId) {
-            $query->whereHas('departureFlights', function ($q) use ($airlineId) {
-                $q->where('airline_id', $airlineId);
-            })->orWhereHas('arrivalFlights', function ($q) use ($airlineId) {
-                $q->where('airline_id', $airlineId);
-            });
-        });
-
-        $query->when($filters['sort'] ?? false, function ($query, $sort) {
-            $query->orderBy($sort, $filters['order'] ?? 'asc');
+        if (!$airlineId) {
+            return;
+        }
+        $query->whereHas('departureFlights', function ($q) use ($airlineId) {
+            $q->where('airline_id', $airlineId);
+        })->orWhereHas('arrivalFlights', function ($q) use ($airlineId) {
+            $q->where('airline_id', $airlineId);
         });
     }
 
