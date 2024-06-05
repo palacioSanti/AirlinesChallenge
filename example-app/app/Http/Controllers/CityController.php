@@ -18,10 +18,13 @@ class CityController extends Controller
                 $query->orderBy($request->sort, $request->order);
             });
 
-        $cities = $query->simplePaginate(10);
+        $cities = $query->paginate(10);
 
         if ($request->ajax()) {
-            return view('cities.partials.city_table', compact('cities'))->render();
+            return response()->json([
+                'table' => view('cities.partials.city_table', compact('cities'))->render(),
+                'pagination' => view('cities.partials.pagination', compact('cities'))->render()
+            ]);
         }
 
         $airlines = Airline::all();

@@ -137,7 +137,8 @@
                     type: 'GET',
                     data: params,
                     success: function(response) {
-                        $('.city-container').html(response);
+                        $('#city-table').html($(response.table).find('#city-table').html());
+                        $('.pagination-container').html(response.pagination);
                     },
                     error: function(xhr) {
                         alert('Error loading cities.');
@@ -161,10 +162,10 @@
 
             $('.city-container').on('click', '.sort', function() {
                 sortType = $(this).data('sort');
-                if(orderAsc){
+                if (orderAsc) {
                     var order = 'asc';
                     orderAsc = false;
-                }else{
+                } else {
                     var order = 'desc';
                     orderAsc = true;
                 }
@@ -181,8 +182,8 @@
                 const params = {
                     page: page,
                     airline_id: $('#airline-filter').val(),
-                    sort: $('.sort[data-order]').data('sort'),
-                    order: $('.sort[data-order]').data('order')
+                    sort: sortType,
+                    order: orderAsc ? 'asc' : 'desc',
                 };
                 loadCities(params);
             });

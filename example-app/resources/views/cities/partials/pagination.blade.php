@@ -1,3 +1,3 @@
-<div class="mt-4">
-    {{ $cities->links() }}
+<div class="mt-4 pagination-container">
+    {!! $cities->appends(request()->query())->links() !!}
 </div>
