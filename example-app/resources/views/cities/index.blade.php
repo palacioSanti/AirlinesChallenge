@@ -133,7 +133,7 @@
 
             function loadCities(params) {
                 $.ajax({
-                    url: '{{ route('cities.index') }}',
+                    url: '{{ route('api.cities.index') }}',
                     type: 'GET',
                     data: params,
                     success: function(response) {

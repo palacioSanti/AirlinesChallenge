@@ -5,12 +5,28 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreCityRequest;
 use App\Models\City;
+use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Casts\Json;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Js;
 
 class CityController extends Controller
 {
+
+
+    public function index(Request $request)
+    {
+        $cities = City::withCount(['departureFlights', 'arrivalFlights'])
+            ->filter($request->input('airline_id'))
+            ->order($request)
+            ->simplePaginate(10);
+
+        return response()->json([
+            'table' => view('cities.partials.city_table', compact('cities'))->render(),
+            'pagination' => view('cities.partials.pagination', compact('cities'))->render()
+        ]);
+    }
+
     public function store(StoreCityRequest $request)
     {
         $validated = $request->validated();
@@ -22,12 +38,6 @@ class CityController extends Controller
 
     public function update(StoreCityRequest $request, City $city)
     {
-        //$validated = $request->validated($city->id);
-
-
-        /*if ($validated->fails()) {
-            return response()->json(['errors' => $validated->errors()], 422);
-        }*/
 
         $city->update([
             'name' => $request->string('name')->toString()

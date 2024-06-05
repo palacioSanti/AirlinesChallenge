@@ -20,10 +20,18 @@ class City extends Model
             ->orWhereHas('arrivalFlights', fn ($q) => $q->where('airline_id', $airlineId));
     }
 
-    public function scopeSort($request)
+    public function scopeOrder($query, $request)
     {
-        $request->when($request->has('sort'), fn ($q) => $q->orderBy($q->sort, $q->order));
+        $sort = $request->input('sort');
+        $order = $request->input('order');
+
+        if (!$sort || !$order) {
+            return;
+        }
+
+        $query->orderBy($sort, $order);
     }
+
 
     public function airlines()
     {
