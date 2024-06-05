@@ -10,15 +10,12 @@ class CityController extends Controller
 {
     public function index(Request $request)
     {
-        $query = City::withCount(['departureFlights', 'arrivalFlights'])
-            ->filter($request->input('airline_id'));
-
-        $query
+        $cities = City::withCount(['departureFlights', 'arrivalFlights'])
+            ->filter($request->input('airline_id'))
             ->when($request->has('sort'), function ($query) use ($request) {
                 $query->orderBy($request->sort, $request->order);
-            });
-
-        $cities = $query->simplePaginate(10);
+            })
+            ->simplePaginate(10);
 
         if ($request->ajax()) {
             return response()->json([

@@ -180,12 +180,11 @@
             $('.pagination-container').on('click', function(e) {
                 e.preventDefault();
                 const page = $(e.target).attr('href').split('page=')[1];
-                console.log(page);
                 const params = {
                     page: page,
                     airline_id: $('#airline-filter').val(),
                     sort: sortType,
-                    order: orderAsc ? 'asc' : 'desc',
+                    order: orderAsc ? 'desc' : 'asc',
                 };
                 loadCities(params);
             });
