@@ -18,7 +18,7 @@ class CityController extends Controller
                 $query->orderBy($request->sort, $request->order);
             });
 
-        $cities = $query->paginate(10);
+        $cities = $query->simplePaginate(10);
 
         if ($request->ajax()) {
             return response()->json([

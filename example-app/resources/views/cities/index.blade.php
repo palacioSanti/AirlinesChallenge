@@ -176,9 +176,11 @@
                 });
             });
 
-            $('.city-container').on('click', '.pagination a', function(e) {
+
+            $('.pagination-container').on('click', function(e) {
                 e.preventDefault();
-                const page = $(this).attr('href').split('page=')[1];
+                const page = $(e.target).attr('href').split('page=')[1];
+                console.log(page);
                 const params = {
                     page: page,
                     airline_id: $('#airline-filter').val(),

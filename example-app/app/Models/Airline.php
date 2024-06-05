@@ -9,9 +9,12 @@ class Airline extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['name', 'description'];
+
     public function cities()
     {
         return $this->belongsToMany(City::class, 'airline_city');
+
     }
 
 }
