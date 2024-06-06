@@ -3,20 +3,19 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreAirlineRequest;
 use App\Models\Airline;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class AirlineController extends Controller
 {
-    public function store(StoreAirlineRequest $request)
+    public function store(Request $request)
     {
-
         $airline = Airline::create($request->all());
         return response()->json(['airline' => $airline], JsonResponse::HTTP_CREATED);
     }
 
-    public function update(StoreAirlineRequest $request, Airline $airline)
+    public function update(Request $request, Airline $airline)
     {
 
         $airline->update($request->all());

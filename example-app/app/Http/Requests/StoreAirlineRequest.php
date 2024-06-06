@@ -12,7 +12,7 @@ class StoreAirlineRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -23,8 +23,8 @@ class StoreAirlineRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', Rule::unique('airlines', 'name')],
-            'description' => ['required'],
+            'name' => ['required', 'min:3', Rule::unique('airlines', 'name')],
+            'description' => ['required', 'max:255'],
         ];
     }
 }

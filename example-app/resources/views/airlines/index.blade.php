@@ -64,7 +64,8 @@
         });
 
         if (response.ok) {
-            const airline = await response.json();
+            const airlineJson = await response.json();
+            const airline = airlineJson.airline;
             const row = `
                 <tr id="airline-${airline.id}">
                     <td class="py-2 px-4 border-b">${airline.id}</td>
