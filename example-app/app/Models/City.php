@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 
 class City extends Model
 {
@@ -20,17 +21,11 @@ class City extends Model
             ->orWhereHas('arrivalFlights', fn ($q) => $q->where('airline_id', $airlineId));
     }
 
-    public function scopeOrder($query, $request)
+    public function scopeOrder(Builder $query, string $sort = 'id', string $order = 'asc')
     {
-        $sort = $request->input('sort');
-        $order = $request->input('order');
-
-        if (!$sort || !$order) {
-            return;
-        }
-
         $query->orderBy($sort, $order);
     }
+
 
 
     public function airlines()

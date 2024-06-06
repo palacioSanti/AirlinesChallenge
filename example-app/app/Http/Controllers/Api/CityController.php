@@ -18,7 +18,7 @@ class CityController extends Controller
     {
         $cities = City::withCount(['departureFlights', 'arrivalFlights'])
             ->filter($request->input('airline_id'))
-            ->order($request)
+            ->order($request->input('sort'), $request->input('order'))
             ->simplePaginate(10);
 
         return response()->json([
@@ -38,7 +38,6 @@ class CityController extends Controller
 
     public function update(StoreCityRequest $request, City $city)
     {
-
         $city->update([
             'name' => $request->string('name')->toString()
         ]);
