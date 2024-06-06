@@ -15,21 +15,11 @@ class AirlineController extends Controller
     public function index(Request $request)
     {
         try {
-            $query = Airline::withCount('flights');
+            $filters = $request->only(['flights_count', 'city']);
 
-            if ($request->has('flights_count')) {
-                $query->having('flights_count', '>=', $request->input('flights_count'));
-            }
-
-            if ($request->has('city') && $request->input('city') !== '') {
-                $city = $request->input('city');
-                $query->whereHas('flights', function ($q) use ($city) {
-                    $q->where('departure_city_id', $city)
-                      ->orWhere('arrival_city_id', $city);
-                });
-            }
-
-            $airlines = $query->paginate(10);
+            $airlines = Airline::withCount('flights')
+                ->applyFilters($filters)
+                ->paginate(10);
 
             return response()->json($airlines);
         } catch (Exception $e) {
