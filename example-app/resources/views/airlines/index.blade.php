@@ -5,6 +5,17 @@
         <h1 class="text-2xl font-bold mb-4">Airlines Administration</h1>
         <div id="errorContainer" class="text-red-500 mb-4"></div>
 
+        <div class="mb-4">
+            <input type="number" id="flightsCountFilter" placeholder="Minimum Active Flights" class="border p-2 rounded mr-2">
+            <select id="cityFilter" class="border p-2 rounded mr-2">
+                <option value="">All Cities</option>
+                @foreach ($cities as $city)
+                    <option value="{{ $city->id }}">{{ $city->name }}</option>
+                @endforeach
+            </select>
+            <button onclick="applyFilters()" class="bg-green-500 text-white p-2 rounded">Apply Filters</button>
+        </div>
+
         <div class="overflow-x-auto">
             <table class="min-w-full bg-white">
                 <thead>
@@ -47,13 +58,22 @@
         });
 
         async function loadAirlines(page = 1) {
+            const flightsCount = document.getElementById('flightsCountFilter').value;
+            const city = document.getElementById('cityFilter').value;
+
+            const params = new URLSearchParams();
+            if (flightsCount) params.append('flights_count', flightsCount);
+            if (city) params.append('city', city);
+            params.append('page', page);
+
             try {
-                const response = await fetch(`/api/airlines?page=${page}`, {
+                const response = await fetch(`/api/airlines?${params.toString()}`, {
                     headers: {
                         'Accept': 'application/json'
                     }
                 });
                 if (!response.ok) {
+                    console.log(response);
                     throw new Error('Network response was not ok');
                 }
                 const data = await response.json();
@@ -62,6 +82,10 @@
             } catch (error) {
                 showError('Error fetching airlines: ' + error.message);
             }
+        }
+
+        function applyFilters() {
+            loadAirlines();
         }
 
         function updateTable(data) {

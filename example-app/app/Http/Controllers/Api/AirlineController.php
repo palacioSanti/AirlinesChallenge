@@ -6,14 +6,31 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreAirlineRequest;
 use App\Models\Airline;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Exception;
 
 class AirlineController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         try {
-            $airlines = Airline::withCount('flights')->paginate(10);
+            $query = Airline::withCount('flights');
+
+            if ($request->has('flights_count')) {
+                $query->having('flights_count', '>=', $request->input('flights_count'));
+            }
+
+            if ($request->has('city') && $request->input('city') !== '') {
+                $city = $request->input('city');
+                $query->whereHas('flights', function ($q) use ($city) {
+                    $q->where('departure_city_id', $city)
+                      ->orWhere('arrival_city_id', $city);
+                });
+            }
+
+            $airlines = $query->paginate(10);
+
             return response()->json($airlines);
         } catch (Exception $e) {
             return response()->json(['error' => 'Error fetching airlines: ' . $e->getMessage()], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
