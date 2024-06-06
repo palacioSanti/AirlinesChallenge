@@ -9,6 +9,30 @@ class City extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['name'];
+
+    public function scopeFilter($query, $airlineId)
+    {
+        if (!$airlineId) {
+            return;
+        }
+        $query->whereHas('departureFlights', fn ($q) => $q->where('airline_id', $airlineId))
+            ->orWhereHas('arrivalFlights', fn ($q) => $q->where('airline_id', $airlineId));
+    }
+
+    public function scopeOrder($query, $request)
+    {
+        $sort = $request->input('sort');
+        $order = $request->input('order');
+
+        if (!$sort || !$order) {
+            return;
+        }
+
+        $query->orderBy($sort, $order);
+    }
+
+
     public function airlines()
     {
         return $this->belongsToMany(Airline::class, 'airline_city');
