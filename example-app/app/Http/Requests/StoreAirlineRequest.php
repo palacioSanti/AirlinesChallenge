@@ -2,10 +2,8 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Contracts\Validation\Validator;
-use Illuminate\Http\JsonResponse;
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Http\Exceptions\HttpResponseException;
 
 class StoreAirlineRequest extends FormRequest
 {
@@ -25,24 +23,8 @@ class StoreAirlineRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'unique:airlines,name'],
+            'name' => ['required', Rule::unique('airlines','name')],
             'description' => 'required',
         ];
-    }
-
-    /**
-     * Handle a failed validation attempt.
-     *
-     * @param  \Illuminate\Contracts\Validation\Validator  $validator
-     * @return void
-     *
-     * @throws \Illuminate\Http\Exceptions\HttpResponseException
-     */
-    protected function failedValidation(Validator $validator)
-    {
-        throw new HttpResponseException(response()->json([
-            'success' => false,
-            'errors' => $validator->errors()
-        ], JsonResponse::HTTP_UNPROCESSABLE_ENTITY));
     }
 }
