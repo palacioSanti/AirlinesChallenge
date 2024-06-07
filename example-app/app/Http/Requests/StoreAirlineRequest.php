@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
@@ -42,6 +43,6 @@ class StoreAirlineRequest extends FormRequest
         throw new HttpResponseException(response()->json([
             'success' => false,
             'errors' => $validator->errors()
-        ], 422));
+        ], JsonResponse::HTTP_UNPROCESSABLE_ENTITY));
     }
 }
