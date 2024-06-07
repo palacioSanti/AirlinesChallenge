@@ -18,15 +18,15 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
 
-        City::factory()->count(15)->create();
+        City::factory()->count(25)->create();
 
-        Airline::factory()->count(3)->create();
+        Airline::factory()->count(12)->create();
 
         Airline::all()->each(function ($airline) {
-            $cities = City::inRandomOrder()->take(5)->pluck('id');
+            $cities = City::inRandomOrder()->take(8)->pluck('id');
             $airline->cities()->attach($cities);
         });
 
-        Flight::factory()->count(20)->create();
+        Flight::factory()->count(40)->create();
     }
 }
