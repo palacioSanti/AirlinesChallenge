@@ -7,14 +7,13 @@ use App\Http\Requests\StoreFlightRequest;
 use Illuminate\Http\Request;
 use App\Models\Flight;
 use Illuminate\Http\JsonResponse;
+use App\Actions\CreateFlightAction;
 
 class FlightController extends Controller
 {
-    public function store(StoreFlightRequest $request)
+    public function store(StoreFlightRequest $request, CreateFlightAction $createFlightAction)
     {
-        $validated = $request->validated();
-
-        $flight = Flight::create($validated);
+        $flight = $createFlightAction($request);
 
         return response()->json(['flight' => $flight], JsonResponse::HTTP_CREATED);
     }
