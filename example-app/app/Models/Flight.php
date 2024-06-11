@@ -16,6 +16,14 @@ class Flight extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'airline_id',
+        'departure_city_id',
+        'arrival_city_id',
+        'departure_datetime',
+        'arrival_datetime',
+    ];
+
     protected $with = ['departureCity', 'arrivalCity', 'airline'];
 
     protected $casts = [

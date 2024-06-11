@@ -16,6 +16,15 @@ class CityController extends Controller
 
     public function index(Request $request)
     {
+        if($request->has('airline_id')) {
+            $airlineId = $request->input('airline_id');
+            $cities = City::whereHas('airlines', function($query) use ($airlineId) {
+                $query->where('airline_id', $airlineId);
+            })->get();
+
+            return response()->json(['cities' => $cities], JsonResponse::HTTP_OK);
+        }
+
         $cities = City::withCount(['departureFlights', 'arrivalFlights'])
             ->filter($request->input('airline_id'))
             ->order($request->input('sort'), $request->input('order'))
