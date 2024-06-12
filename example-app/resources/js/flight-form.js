@@ -44,17 +44,6 @@ document.addEventListener('DOMContentLoaded', function () {
             arrival_datetime: data.get('arrival_datetime'),
         }).then(response => {
             const flight = response.data.flight;
-            const flightList = $('#flight-list');
-            // flightList.append(`<tr id="flight-${flight.id}">
-            //                         <td>${flight.airline.name}</td>
-            //                         <td>${flight.departure_city.name}</td>
-            //                         <td>${flight.arrival_city.name}</td>
-            //                         <td>${flight.departure_datetime}</td>
-            //                         <td>${flight.arrival_datetime}</td>
-            //                         <td>
-            //                             <button onclick="confirmDelete(${flight.id})">Delete</button>
-            //                         </td>
-            //                     </tr>`);
             this.reset();
             $('.select2').val(null).trigger('change');
             showToast('Success', 'Flight saved successfully.');
