@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     $('#airline').on('change', function() {
         const airlineId = $(this).val();
-        axios.get(`/api/cities?airline_id=${airlineId}`).then(response => {
+        axios.get(`/api/flightsByCity?airline_id=${airlineId}`).then(response => {
             const cities = response.data.cities;
             let departureSelect = $('#departure_city_id');
             let arrivalSelect = $('#arrival_city_id');

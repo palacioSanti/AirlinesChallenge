@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\CityController;
 use App\Http\Controllers\Api\AirlineController;
 use App\Http\Controllers\Api\FlightController;
+use App\Http\Controllers\Api\FlightsByCityController;
 use App\Http\Middleware\ForceJsonResponse;
 
 
@@ -28,5 +29,9 @@ Route::middleware(ForceJsonResponse::class)->group(function () {
         Route::post('/', [FlightController::class, 'store'])->name('store');
         Route::put('/{flight}', [FlightController::class, 'update'])->name('update');
         Route::delete('/{flight}', [FlightController::class, 'destroy'])->name('destroy');
+    });
+
+    Route::prefix('flightsByCity')->name('api.flightsByCity.')->group(function () {
+        Route::get('/', [FlightsByCityController::class, 'index'])->name('index');
     });
 });
