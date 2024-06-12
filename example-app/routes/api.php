@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\CityController;
 use App\Http\Controllers\Api\AirlineController;
 use App\Http\Controllers\Api\FlightController;
-use App\Http\Controllers\Api\FlightsByCityController;
+use App\Http\Controllers\Api\CitiesByAirlineController;
 use App\Http\Middleware\ForceJsonResponse;
 
 
@@ -31,7 +31,7 @@ Route::middleware(ForceJsonResponse::class)->group(function () {
         Route::delete('/{flight}', [FlightController::class, 'destroy'])->name('destroy');
     });
 
-    Route::prefix('flightsByCity')->name('api.flightsByCity.')->group(function () {
-        Route::get('/', [FlightsByCityController::class, 'index'])->name('index');
+    Route::prefix('citiesByAirline')->name('api.citiesByAirline.')->group(function () {
+        Route::get('/', [CitiesByAirlineController::class, 'index'])->name('index');
     });
 });

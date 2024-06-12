@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\City;
 use Illuminate\Http\JsonResponse;
 
-class FlightsByCityController extends Controller
+class CitiesByAirlineController extends Controller
 {
     public function index(Request $request)
     {
