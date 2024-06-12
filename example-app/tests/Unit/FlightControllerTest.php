@@ -13,26 +13,6 @@ class FlightControllerTest extends TestCase
 {
     use RefreshDatabase;
 
-    private $airline;
-    private $cities;
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->seedDatabase();
-    }
-
-    protected function seedDatabase()
-    {
-        $this->cities = City::factory()->count(2)->create();
-
-        $this->airline = Airline::factory()->count(1)->create();
-
-        $this->airline->cities()->attach($this->cities[0]->id);
-        $this->airline->cities()->attach($this->cities[1]->id);
-    }
-
     /**
      * Test to store a new flight.
      *
@@ -40,11 +20,17 @@ class FlightControllerTest extends TestCase
      */
     public function test_store_flight()
     {
+        $airline = Airline::factory()->create();
+        $departureCity = City::factory()->create();
+        $arrivalCity = City::factory()->create();
+
+        $airline->cities()->attach($departureCity->id);
+        $airline->cities()->attach($arrivalCity->id);
 
         $data = [
-            'airline_id' => $this->airline->id,
-            'departure_city_id' => $this->cities[0]->id,
-            'arrival_city_id' => $this->cities[1]->id,
+            'airline_id' => $airline->id,
+            'departure_city_id' => $departureCity->id,
+            'arrival_city_id' => $arrivalCity->id,
             'departure_datetime' => now()->addHour()->toDateTimeString(),
             'arrival_datetime' => now()->addHours(2)->toDateTimeString(),
         ];
@@ -81,15 +67,22 @@ class FlightControllerTest extends TestCase
      */
     public function test_destroy_flight()
     {
+        $airline = Airline::factory()->create();
+        $departureCity = City::factory()->create();
+        $arrivalCity = City::factory()->create();
+
+        $airline->cities()->attach($departureCity->id);
+        $airline->cities()->attach($arrivalCity->id);
+
         $data = [
-            'airline_id' => $this->airline->id,
-            'departure_city_id' => $this->cities[0]->id,
-            'arrival_city_id' => $this->cities[1]->id,
+            'airline_id' => $airline->id,
+            'departure_city_id' => $departureCity->id,
+            'arrival_city_id' => $arrivalCity->id,
             'departure_datetime' => now()->addHour()->toDateTimeString(),
             'arrival_datetime' => now()->addHours(2)->toDateTimeString(),
         ];
 
-        $flight = $this->postJson('/api/flights', $data);
+        $flight = Flight::create($data);
 
         $response = $this->deleteJson('/api/flights/' . $flight->id);
 
