@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use App\DTOs\FlightDataDTO;
 
 class StoreFlightRequest extends FormRequest
 {
@@ -30,14 +31,14 @@ class StoreFlightRequest extends FormRequest
         ];
     }
 
-    public function toDTO(): array
+    public function toDTO(): FlightDataDTO
     {
-        return [
-            'airline_id' => $this->input('airline_id'),
-            'departure_city_id' => $this->input('departure_city_id'),
-            'arrival_city_id' => $this->input('arrival_city_id'),
-            'departure_datetime' => $this->input('departure_datetime'),
-            'arrival_datetime' => $this->input('arrival_datetime'),
-        ];
+        return new FlightDataDTO(
+            $this->input('airline_id'),
+            $this->input('departure_city_id'),
+            $this->input('arrival_city_id'),
+            $this->input('departure_datetime'),
+            $this->input('arrival_datetime'),
+        );
     }
 }

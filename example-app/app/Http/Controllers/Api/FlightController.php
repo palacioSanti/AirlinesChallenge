@@ -13,7 +13,7 @@ class FlightController extends Controller
 {
     public function store(StoreFlightRequest $request, CreateFlightAction $createFlightAction)
     {
-        $flight = $createFlightAction($request);
+        $flight = $createFlightAction->execute($request->toDTO());
 
         return response()->json(['flight' => $flight], JsonResponse::HTTP_CREATED);
     }
