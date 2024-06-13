@@ -18,7 +18,6 @@
             @include('cities.partials.city_table', ['cities' => $cities])
         </div>
 
-        <!-- Include the AddCity Vue component -->
         <add-city></add-city>
     </div>
 @endsection
@@ -28,8 +27,6 @@
         $(document).ready(function() {
             const urlParams = new URLSearchParams(window.location.search);
             const currentAirlineId = urlParams.get('airline_id');
-
-            // Move the add city logic to the Vue component
 
             $('.city-container').on('click', '.btn-delete', function() {
                 const row = $(this).closest('tr');
