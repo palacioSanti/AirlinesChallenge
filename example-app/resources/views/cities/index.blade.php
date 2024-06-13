@@ -18,10 +18,8 @@
             @include('cities.partials.city_table', ['cities' => $cities])
         </div>
 
-        <div class="mb-3 mt-4">
-            <input type="text" id="city-name" placeholder="Name of the city" class="form-input mt-1 block w-full" />
-            <button id="add-city" class="bg-blue-500 text-white px-4 py-2 mt-2 rounded">Add city</button>
-        </div>
+        <!-- Include the AddCity Vue component -->
+        <add-city></add-city>
     </div>
 @endsection
 
@@ -31,52 +29,7 @@
             const urlParams = new URLSearchParams(window.location.search);
             const currentAirlineId = urlParams.get('airline_id');
 
-            $('#add-city').on('click', function() {
-                const name = $('#city-name').val();
-                if (!name) {
-                    alert('The name of the city cant be empty.');
-                    return;
-                }
-
-                $.ajax({
-                    url: '{{ route('api.cities.store') }}',
-                    type: 'POST',
-                    data: {
-                        name: name,
-                        _token: '{{ csrf_token() }}',
-                    },
-                    success: function(response) {
-                        if (currentAirlineId) {
-                            alert(
-                                'The city has been added successfully.'
-                            );
-                        } else {
-                            $('#city-table').append(`
-                                <tr data-id="${response.city.id}">
-                                    <td class="py-2 px-4 border-b">${response.city.id}</td>
-                                    <td class="py-2 px-4 border-b">${response.city.name}</td>
-                                    <td class="py-2 px-4 border-b">0</td>
-                                    <td class="py-2 px-4 border-b">0</td>
-                                    <td class="py-2 px-4 border-b">
-                                        <button class="btn-edit bg-yellow-500 text-white px-3 py-1 rounded">Edit</button>
-                                        <button class="btn-delete bg-red-500 text-white px-3 py-1 rounded">Delete</button>
-                                    </td>
-                                </tr>
-                            `);
-                        }
-                        $('#city-name').val('');
-                    },
-                    error: function(xhr) {
-                        if (xhr.responseJSON && xhr.responseJSON.errors) {
-                            alert(xhr.responseJSON.errors.name[0]);
-                        } else if (xhr.responseJSON && xhr.responseJSON.message) {
-                            alert(xhr.responseJSON.message);
-                        } else {
-                            alert('Unkown error adding city.');
-                        }
-                    }
-                });
-            });
+            // Move the add city logic to the Vue component
 
             $('.city-container').on('click', '.btn-delete', function() {
                 const row = $(this).closest('tr');
@@ -100,11 +53,10 @@
             $('.city-container').on('click', '.btn-edit', function() {
                 const row = $(this).closest('tr');
                 const id = row.data('id');
-                const name = prompt('Type the name of the city:', row.find('td:nth-child(2)')
-                    .text());
+                const name = prompt('Type the name of the city:', row.find('td:nth-child(2)').text());
 
                 if (!name) {
-                    alert('The name of the city cant be empty.');
+                    alert('The name of the city can\'t be empty.');
                     return;
                 }
 
@@ -124,12 +76,11 @@
                         } else if (xhr.responseJSON && xhr.responseJSON.message) {
                             alert(xhr.responseJSON.message);
                         } else {
-                            alert('Unkown error editing the city.');
+                            alert('Unknown error editing the city.');
                         }
                     }
                 });
             });
-
 
             function loadCities(params) {
                 $.ajax({
@@ -162,20 +113,15 @@
 
             $('.city-container').on('click', '.sort', function() {
                 sortType = $(this).data('sort');
-                if (orderAsc) {
-                    var order = 'asc';
-                    orderAsc = false;
-                } else {
-                    var order = 'desc';
-                    orderAsc = true;
-                }
+                let order = orderAsc ? 'asc' : 'desc';
+                orderAsc = !orderAsc;
+
                 loadCities({
                     sort: sortType,
                     order: order,
                     airline_id: airlineId
                 });
             });
-
 
             $('.pagination-container').on('click', function(e) {
                 e.preventDefault();

@@ -6,6 +6,7 @@
 
 import './bootstrap';
 import { createApp } from 'vue';
+import AddCity from './components/AddCity.vue';
 
 import axios from 'axios';
 window.axios = axios;
@@ -21,6 +22,8 @@ const app = createApp({});
 
 import ExampleComponent from './components/ExampleComponent.vue';
 app.component('example-component', ExampleComponent);
+
+app.component('add-city', AddCity);
 
 /**
  * The following block of code may be used to automatically register your
@@ -43,3 +46,4 @@ app.component('example-component', ExampleComponent);
 app.mount('#app');
 
 import './flight-form.js';
+
