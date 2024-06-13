@@ -27,6 +27,8 @@ class CityController extends Controller
         ]);
     }
 
+
+
     public function store(StoreCityRequest $request)
     {
         $validated = $request->validated();

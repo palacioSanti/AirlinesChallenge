@@ -1,0 +1,26 @@
+<?php
+
+namespace App\View\Components;
+
+use Closure;
+use Illuminate\Contracts\View\View;
+use Illuminate\View\Component;
+use Illuminate\Database\Eloquent\Collection;
+
+class AirlineDropdownComponent extends Component
+{
+    public Collection $airlines;
+
+    public function __construct(Collection $airlines)
+    {
+        $this->airlines = $airlines;
+    }
+
+    /**
+     * Get the view / contents that represent the component.
+     */
+    public function render(): View|Closure|string
+    {
+        return view('components.airline-dropdown-component');
+    }
+}

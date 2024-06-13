@@ -1,24 +1,28 @@
 <?php
 
-namespace Database\Seeders;
+namespace Tests\Unit;
 
-use App\Models\{
-    Airline,
-    City,
-    Flight,
-};
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use Illuminate\Database\Seeder;
+use Tests\TestCase;
+use App\Models\Flight;
+use App\Models\Airline;
+use App\Models\City;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\JsonResponse;
 
-class DatabaseSeeder extends Seeder
+class FlightControllerTest extends TestCase
 {
-    /**
-     * Seed the application's database.
-     */
-    public function run(): void
-    {
+    use RefreshDatabase;
 
-        City::factory()->count(25)->create();
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->seedDatabase();
+    }
+
+    protected function seedDatabase()
+    {
+        City::factory()->count(4)->create();
 
         Airline::factory()->count(12)->create();
 
@@ -29,4 +33,5 @@ class DatabaseSeeder extends Seeder
 
         Flight::factory()->count(40)->create();
     }
+
 }
